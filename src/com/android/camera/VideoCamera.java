@@ -729,9 +729,6 @@ public class VideoCamera extends ActivityBase
                 mPreferences.getString(CameraSettings.KEY_VIDEO_QUALITY,
                         defaultQuality);
         int quality = Integer.valueOf(videoQuality);
-
-		Log.v(TAG, "1 - readVideoPreferences - quality integer = " + quality);
-
         // Set video quality.
         Intent intent = getIntent();
         if (intent.hasExtra(MediaStore.EXTRA_VIDEO_QUALITY)) {
@@ -742,7 +739,6 @@ public class VideoCamera extends ActivityBase
             } else {  // 0 is mms.
                 quality = CamcorderProfile.QUALITY_LOW;
             }
-			Log.v(TAG, "2 - readVideoPreferences - quality camcorder profile = " + quality);
         }
 
         // Set video duration limit. The limit is read from the preference,
@@ -789,7 +785,6 @@ public class VideoCamera extends ActivityBase
         // TODO: This should be checked instead directly +1000.
         if (mCaptureTimeLapse) quality += 1000;
         mProfile = CamcorderProfile.get(mCameraId, quality);
-		Log.v(TAG, "3 - readVideoPreferences - quality integer = " + quality);
         getDesiredPreviewSize();
     }
 
@@ -810,8 +805,8 @@ public class VideoCamera extends ActivityBase
             List<Size> sizes = mParameters.getSupportedPreviewSizes();
             Size preferred = mParameters.getPreferredPreviewSizeForVideo();
             if (preferred == null) {
-				Log.v(TAG, "preferred equalled null, getting: " + mProfile.quality);
-                preferred = sizes.get(mProfile.quality);
+		Log.v(TAG, "preferred equalled null, getting: " + mProfile.quality);
+                preferred = sizes.get(mProfile.quality);    // Change for setting correct video quality
             }
             int product = preferred.width * preferred.height;
             Iterator it = sizes.iterator();
@@ -824,7 +819,6 @@ public class VideoCamera extends ActivityBase
             }
             Size optimalSize = Util.getOptimalPreviewSize(this, sizes,
                 (double) mProfile.videoFrameWidth / mProfile.videoFrameHeight);
-			Log.v(TAG, "3 - Just got optimal sizes");
             mDesiredPreviewWidth = optimalSize.width;
             mDesiredPreviewHeight = optimalSize.height;
         }
